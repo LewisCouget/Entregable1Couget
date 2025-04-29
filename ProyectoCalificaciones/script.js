@@ -9,7 +9,8 @@ function pedirCantidadAlumnos() {
     }
   } while (isNaN(numeroDeAlumnos) || numeroDeAlumnos <= 0);
 
-  mostrarAlumnos(numeroDeAlumnos);
+  const listaAlumnos = mostrarAlumnos(numeroDeAlumnos);
+  mostrarListaAlumnos(listaAlumnos);
 }
 
 //#########################################################################################################
@@ -37,6 +38,13 @@ function datoAlumno() {
 
   do {
     nombre = prompt("Ingrese su nombre");
+    if (
+      typeof nombre !== "string" ||
+      nombre.trim() === "" ||
+      /\d/.test(nombre)
+    ) {
+      alert("Por favor, ingrese su nombre sin digitos!");
+    }
   } while (
     typeof nombre !== "string" ||
     nombre.trim() === "" ||
@@ -45,11 +53,17 @@ function datoAlumno() {
 
   do {
     edad = Number(prompt("Ingrese su edad"));
-  } while (isNaN(edad) || edad <= 0 || edad > 100);
+    if (isNaN(edad) || edad <= 17 || edad > 70) {
+      alert("Por favor, ingrese numeros entre 17 y 70!");
+    }
+  } while (isNaN(edad) || edad <= 17 || edad > 70);
 
   do {
     calificacion = Number(prompt("Ingrese su calificación"));
-  } while (isNaN(calificacion) || calificacion < 0 || calificacion > 10);
+    if (isNaN(calificacion) || calificacion < 0 || calificacion > 100) {
+      alert("Por favor, ingrese numeros entre 0 y 100!");
+    }
+  } while (isNaN(calificacion) || calificacion < 0 || calificacion > 100);
 
   const alumno = new Persona(nombre, edad, calificacion);
   console.log(alumno);
@@ -61,9 +75,9 @@ function datoAlumno() {
 // 🚀TEST CALIFICACIONES🚀
 
 function testCalificacion(alumno) {
-  const APROBADO = alumno.calificacion >= 7;
-  const REPROBADO = alumno.calificacion < 7 && alumno.calificacion > 4;
-  const SINEXAMEN = alumno.calificacion <= 3;
+  const APROBADO = alumno.calificacion >= 70;
+  const REPROBADO = alumno.calificacion < 70 && alumno.calificacion > 40;
+  const SINEXAMEN = alumno.calificacion <= 30;
 
   if (APROBADO) {
     console.log(
@@ -87,13 +101,30 @@ function testCalificacion(alumno) {
 // 🚀MOSTRAR ALUMNOS🚀
 
 function mostrarAlumnos(cantidadAlumnos) {
+  const listaAlumnos = [];
   for (let i = 0; i < cantidadAlumnos; i++) {
     console.log(`---  Dato de alumno N°${i + 1}  ---`);
     const nuevoAlumno = datoAlumno();
     if (nuevoAlumno) {
       testCalificacion(nuevoAlumno);
+      listaAlumnos.push(nuevoAlumno);
     }
   }
+  return listaAlumnos;
 }
 
-pedirCantidadAlumnos();
+// 🚀MOSTRAR UN ARRAY DE ALUMNOS🚀
+
+function mostrarListaAlumnos(listaAlumnos) {
+  console.log("--- Lista de alumnos ingresados ---");
+  console.log(listaAlumnos);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const botonIniciar = document.getElementById("iniciarProceso");
+  if (botonIniciar) {
+    botonIniciar.addEventListener("click", pedirCantidadAlumnos);
+  }
+});
+
+//pedirCantidadAlumnos();

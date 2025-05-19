@@ -126,5 +126,3 @@ document.addEventListener("DOMContentLoaded", function () {
     botonIniciar.addEventListener("click", pedirCantidadAlumnos);
   }
 });
-
-//pedirCantidadAlumnos();
